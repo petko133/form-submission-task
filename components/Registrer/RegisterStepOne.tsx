@@ -1,10 +1,10 @@
 'use client';
 import { Button, Image, Input, Text } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BackIcon from '../../public/back-icon.svg';
 import NextImage from 'next/image';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import Select, { GroupBase } from 'react-select';
+import Select from 'react-select';
 
 type FormFields = {
     name: string;
@@ -19,6 +19,9 @@ interface Props {
 
 const RegisterStepOne = (props: Props) => {
     const { setStep } = props;
+    const [hobbies, setHobbies] = useState<{ label: string; value: string }[]>(
+        []
+    );
 
     const [selectedOptions, setSelectedOptions] = useState<
         { label: string; value: string }[]
@@ -48,17 +51,25 @@ const RegisterStepOne = (props: Props) => {
         }
     };
 
-    const hobbies: GroupBase<{ label: string; value: string }>[] = [
-        {
-            label: 'Hobbies',
-            options: [
+    useEffect(() => {
+        try {
+            const getHobbies = async () => {
+                const response = await fetch('/api/hobbies');
+                const data = await response.json();
+                setHobbies(data.body);
+            };
+            getHobbies();
+        } catch (error) {
+            console.error('Error fetching hobbies:', error);
+            const hobbies = [
                 { label: 'React.js', value: 'react' },
                 { label: 'Vue.js', value: 'vue' },
                 { label: 'Angular', value: 'angular' },
                 { label: 'Svelte', value: 'svelte' },
-            ],
-        },
-    ];
+            ];
+            setHobbies(hobbies);
+        }
+    }, []);
 
     return (
         <div>
@@ -152,6 +163,7 @@ const RegisterStepOne = (props: Props) => {
                             }}
                             options={hobbies}
                             closeMenuOnSelect={false}
+                            placeholder='Select your “Interests”'
                             // only allow user to choose up to 2 options
                             isOptionDisabled={() => selectedOptions.length >= 2}
                             className='basic-multi-select text-black mb-4!'
@@ -169,7 +181,7 @@ const RegisterStepOne = (props: Props) => {
                     width='full'
                     disabled={isSubmitting}
                 >
-                    {isSubmitting ? 'Loading...' : 'Submit'}
+                    {isSubmitting ? 'Loading...' : 'Next'}
                 </Button>
                 {errors.root && (
                     <div className='text-red-500 text-base! mb-2!'>
