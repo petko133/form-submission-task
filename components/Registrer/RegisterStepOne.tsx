@@ -4,7 +4,8 @@ import React, { useEffect, useState } from 'react';
 import BackIcon from '../../public/back-icon.svg';
 import NextImage from 'next/image';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import Select from 'react-select';
+import { Select } from 'chakra-react-select';
+// import Select from 'react-select';
 
 type FormFields = {
     name: string;
@@ -118,6 +119,7 @@ const RegisterStepOne = (props: Props) => {
                 )}
                 <Input
                     mb='2'
+                    mt='4'
                     {...register('password', {
                         required: 'Please enter a password',
                     })}
@@ -130,6 +132,7 @@ const RegisterStepOne = (props: Props) => {
                     </div>
                 )}
                 <Input
+                    mt='4'
                     mb='2'
                     {...register('confirmPassword', {
                         required: 'Please confirm your password',
@@ -150,6 +153,8 @@ const RegisterStepOne = (props: Props) => {
                             {...field}
                             isMulti
                             value={selectedOptions}
+                            variant={'outline'}
+                            // selectedOptionColorPalette={'teal'}
                             onChange={(selected) => {
                                 setSelectedOptions(
                                     selected as {
@@ -166,14 +171,14 @@ const RegisterStepOne = (props: Props) => {
                             placeholder='Select your “Interests”'
                             // only allow user to choose up to 2 options
                             isOptionDisabled={() => selectedOptions.length >= 2}
-                            className='basic-multi-select text-black mb-4!'
+                            className='basic-multi-select my-4!'
                             classNamePrefix='select'
                         />
                     )}
                 />
 
                 <Button
-                    mb='2'
+                    mb='4'
                     type='submit'
                     colorPalette='teal'
                     variant='subtle'
