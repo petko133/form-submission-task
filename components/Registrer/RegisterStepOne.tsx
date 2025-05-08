@@ -5,14 +5,16 @@ import BackIcon from '../../public/back-icon.svg';
 import NextImage from 'next/image';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Select } from 'chakra-react-select';
-// import Select from 'react-select';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-type FormFields = {
-    name: string;
-    password: string;
-    confirmPassword: string;
-    hobbies: { label: string; value: string }[];
-};
+const FormFieldsSchema = z.object({
+    name: z.string().min(1, 'Please enter a username'),
+    password: z.string().min(4, 'Password must be at least 4 characters long'),
+    confirmPassword: z.string().min(4, 'Please confirm your password'),
+    hobbies: z.array(z.object({ label: z.string(), value: z.string() })),
+});
+type FormFields = z.infer<typeof FormFieldsSchema>;
 
 interface Props {
     setStep: (step: string) => void;
@@ -34,7 +36,9 @@ const RegisterStepOne = (props: Props) => {
         handleSubmit,
         setError,
         formState: { errors, isSubmitting },
-    } = useForm<FormFields>();
+    } = useForm<FormFields>({
+        resolver: zodResolver(FormFieldsSchema),
+    });
 
     const onSubmit: SubmitHandler<FormFields> = (data) => {
         if (data.password.length < 4) {
@@ -50,6 +54,8 @@ const RegisterStepOne = (props: Props) => {
             });
             return;
         }
+
+        setStep('registerStepTwo');
     };
 
     useEffect(() => {

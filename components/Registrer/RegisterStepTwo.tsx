@@ -1,15 +1,62 @@
 'use client';
-import { Button, Image, Text } from '@chakra-ui/react';
+import {
+    Button,
+    FileUpload,
+    Float,
+    Image,
+    Text,
+    useFileUploadContext,
+} from '@chakra-ui/react';
 import React from 'react';
 import BackIcon from '../../public/back-icon.svg';
 import NextImage from 'next/image';
+import { LuFileImage, LuX } from 'react-icons/lu';
+import { Controller, useForm } from 'react-hook-form';
 
 interface Props {
     setStep: (step: string) => void;
 }
 
+const FileUploadList = () => {
+    const fileUpload = useFileUploadContext();
+    const files = fileUpload.acceptedFiles;
+    if (files.length === 0) return null;
+    return (
+        <FileUpload.ItemGroup w='1/3' display='flex' alignItems={'center'}>
+            {files.map((file) => (
+                <FileUpload.Item
+                    w='auto'
+                    boxSize='20'
+                    p='2'
+                    file={file}
+                    key={file.name}
+                >
+                    <FileUpload.ItemPreviewImage />
+                    <Float placement='top-end'>
+                        <FileUpload.ItemDeleteTrigger
+                            boxSize='4'
+                            layerStyle='fill.solid'
+                        >
+                            <LuX />
+                        </FileUpload.ItemDeleteTrigger>
+                    </Float>
+                </FileUpload.Item>
+            ))}
+        </FileUpload.ItemGroup>
+    );
+};
+
 const RegisterStepTwo = (props: Props) => {
     const { setStep } = props;
+
+    const {
+        control,
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<FormValues>();
+    const onSubmit = handleSubmit((data) => console.log('On Submit: ', data));
+
     return (
         <div>
             <Text
@@ -40,15 +87,46 @@ const RegisterStepTwo = (props: Props) => {
                 </Button>
                 Register
             </Text>
-            <Button
-                colorPalette='teal'
-                variant='subtle'
-                size='lg'
-                width='full'
-                onClick={() => setStep('review')}
-            >
-                Submit
-            </Button>
+            <Text fontSize='md' mb='2'>
+                Upload your profile picture
+            </Text>
+            <form action='' onSubmit={handleSubmit(onSubmit)}></form>
+            <Controller
+                name='profilePicture'
+                control={control}
+                render={({ field }) => (
+                    <>
+                        <FileUpload.Root
+                            {...field}
+                            key={field.name}
+                            mb='4'
+                            accept='image/*'
+                            display={'flex'}
+                            w='full'
+                            flexDirection={'row'}
+                            alignItems={'center'}
+                            justifyContent={'center'}
+                        >
+                            <FileUpload.HiddenInput />
+                            <FileUpload.Trigger asChild>
+                                <Button variant='outline' size='sm' w='2/3'>
+                                    <LuFileImage /> Upload Images
+                                </Button>
+                            </FileUpload.Trigger>
+                            <FileUploadList />
+                        </FileUpload.Root>
+                        <Button
+                            colorPalette='teal'
+                            variant='subtle'
+                            size='lg'
+                            width='full'
+                            onClick={() => setStep('review')}
+                        >
+                            Submit
+                        </Button>
+                    </>
+                )}
+            />
         </div>
     );
 };

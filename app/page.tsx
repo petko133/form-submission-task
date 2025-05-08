@@ -26,18 +26,32 @@ export default function Home() {
     };
 
     return (
-        <div className='w-full h-screen flex items-center justify-center'>
-            <Provider>
-                <Box
-                    maxW='sm'
-                    minW='sm'
-                    borderWidth='1px'
-                    p='4'
-                    borderRadius={8}
-                >
-                    {renderSteps()}
-                </Box>
-            </Provider>
-        </div>
+        <>
+            <header></header>
+            <section>
+                <div className='w-full h-screen flex flex-col items-center justify-center'>
+                    <div className='mb-8!'>
+                        <h1 className='text-3xl! font-bold! text-center mb-4!'>
+                            Welcome to the Registration Page
+                        </h1>
+                        <p className='text-center text-gray-600'>
+                            Please follow the steps below to complete your
+                            registration.
+                        </p>
+                    </div>
+                    <Provider>
+                        <Box
+                            maxW='sm'
+                            minW='sm'
+                            borderWidth='1px'
+                            p='4'
+                            borderRadius={8}
+                        >
+                            {renderSteps()}
+                        </Box>
+                    </Provider>
+                </div>
+            </section>
+        </>
     );
 }
