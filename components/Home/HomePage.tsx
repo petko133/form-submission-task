@@ -20,6 +20,8 @@ const HomePage = (props: Props) => {
                 size='lg'
                 width='full'
                 onClick={() => setStep('registerStepOne')}
+                border={'1px solid'}
+                borderColor={'whiteAlpha.500'}
             >
                 Sign up
             </Button>

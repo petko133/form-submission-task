@@ -148,6 +148,7 @@ const RegisterStepOne = (props: Props) => {
             <form className='tutorial gap-2' onSubmit={handleSubmit(onSubmit)}>
                 <div className='relative flex flex-col'>
                     <Input
+                        borderColor={'whiteAlpha.500'}
                         mb='2'
                         {...register('name')}
                         type='text'
@@ -162,6 +163,7 @@ const RegisterStepOne = (props: Props) => {
                 </div>
                 <div className='relative flex flex-col'>
                     <Input
+                        borderColor={'whiteAlpha.500'}
                         mb='2'
                         mt='4'
                         {...register('password')}
@@ -177,6 +179,7 @@ const RegisterStepOne = (props: Props) => {
                 </div>
                 <div className='relative flex flex-col'>
                     <Input
+                        borderColor={'whiteAlpha.500'}
                         mt='4'
                         mb='2'
                         {...register('confirmPassword')}
@@ -231,8 +234,9 @@ const RegisterStepOne = (props: Props) => {
                                 isOptionDisabled={() =>
                                     selectedOptions.length >= 2
                                 }
-                                className='basic-multi-select mt-4!'
+                                className='basic-multi-select mt-4! border-white!'
                                 classNamePrefix='select'
+                                styles={{}}
                             />
                             {invalid && (
                                 <span className='text-red-500 text-sm! absolute -bottom-5 left-3'>
@@ -250,6 +254,8 @@ const RegisterStepOne = (props: Props) => {
                     size='lg'
                     width='full'
                     disabled={isSubmitting}
+                    border={'1px solid'}
+                    borderColor={'whiteAlpha.500'}
                 >
                     {isSubmitting ? 'Loading...' : 'Next'}
                 </Button>

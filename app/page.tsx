@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Heading, Text } from '@chakra-ui/react';
 import HomePage from '@/components/Home/HomePage';
 import RegisterStepOne from '@/components/Registrer/RegisterStepOne';
 import RegisterStepTwo from '@/components/Registrer/RegisterStepTwo';
@@ -31,7 +31,12 @@ export default function Home() {
                 );
             case 'registerStepTwo':
                 return (
-                    <RegisterStepTwo setStep={setStep} setAvatar={setAvatar} />
+                    <RegisterStepTwo
+                        setStep={setStep}
+                        setAvatar={setAvatar}
+                        avatar={avatar}
+                        userInfo={userInfo}
+                    />
                 );
             case 'review':
                 return (
@@ -52,24 +57,38 @@ export default function Home() {
             <header></header>
             <section>
                 <div className='w-full h-screen relative flex flex-col items-center justify-center px-8! overflow-hidden'>
-                    <div className='background w-full! h-full!'></div>
-                    <div className='mb-8!'>
-                        <h1 className='text-3xl! font-bold! text-center mb-4!'>
-                            Welcome to the Registration Page
-                        </h1>
-                        <p className='text-center text-gray-600'>
-                            Please follow the steps below to complete your
-                            registration.
-                        </p>
-                    </div>
-
+                    <div className='background aspect-square'></div>
                     <Provider>
+                        <div className='mb-8!'>
+                            <Heading
+                                color={'whiteAlpha.900'}
+                                fontSize={{ base: '2xl', md: '3xl' }}
+                                fontWeight={'bold'}
+                                textAlign={'center'}
+                                textTransform={'uppercase'}
+                                textShadow={'0 0 10px rgba(0, 0, 0, 0.5)'}
+                                mb={4}
+                            >
+                                Welcome to the Registration Page
+                            </Heading>
+                            <Text
+                                color={'whiteAlpha.800'}
+                                fontSize={{ base: 'md', md: 'lg' }}
+                                textAlign={'center'}
+                                textShadow={'0 0 10px rgba(0, 0, 0, 0.5)'}
+                                mb={4}
+                            >
+                                Please follow the steps below to complete your
+                                registration.
+                            </Text>
+                        </div>
                         <Box
                             maxW='sm'
                             w='100%'
                             borderWidth='1px'
                             p='4'
                             borderRadius={8}
+                            borderColor={'whiteAlpha.500'}
                         >
                             {renderSteps()}
                         </Box>

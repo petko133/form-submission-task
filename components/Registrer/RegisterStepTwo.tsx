@@ -7,7 +7,7 @@ import {
     Text,
     useFileUploadContext,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BackIcon from '../../public/back-icon.svg';
 import NextImage from 'next/image';
 import { LuFileImage, LuX } from 'react-icons/lu';
@@ -18,6 +18,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 interface Props {
     setStep: (step: string) => void;
     setAvatar: (avatar: string) => void;
+    userInfo:
+        | {
+              name: string;
+              hobbies: { label: string; value: string }[];
+              password: string;
+              confirmPassword: string;
+          }
+        | undefined;
+    avatar: string | null;
 }
 
 const FileUploadSchema = z.object({
@@ -58,7 +67,7 @@ const FileUploadList = () => {
 };
 
 const RegisterStepTwo = (props: Props) => {
-    const { setStep, setAvatar } = props;
+    const { setStep, avatar, setAvatar, userInfo } = props;
     const [file, setFile] = useState<File>();
 
     const {
@@ -86,9 +95,34 @@ const RegisterStepTwo = (props: Props) => {
     const onSubmit = () => {
         if (file) {
             convert2base64(file);
-            setStep('review');
         }
     };
+
+    useEffect(() => {
+        if (!avatar || !userInfo) return;
+        // Mock API call
+        try {
+            const sendData = async () => {
+                const response = await fetch('/api/form', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: userInfo?.name,
+                        hobbies: userInfo?.hobbies,
+                        avatar: avatar,
+                    }),
+                });
+                const data = await response.json();
+                console.log(data);
+            };
+            sendData();
+            setStep('review');
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }, [file, avatar, userInfo, setStep]);
 
     return (
         <div>
@@ -143,7 +177,13 @@ const RegisterStepTwo = (props: Props) => {
                             >
                                 <FileUpload.HiddenInput />
                                 <FileUpload.Trigger asChild>
-                                    <Button variant='outline' size='sm' w='2/3'>
+                                    <Button
+                                        variant='outline'
+                                        size='sm'
+                                        w='2/3'
+                                        border={'1px solid'}
+                                        borderColor={'whiteAlpha.500'}
+                                    >
                                         <LuFileImage /> Upload Images
                                     </Button>
                                 </FileUpload.Trigger>
@@ -162,6 +202,8 @@ const RegisterStepTwo = (props: Props) => {
                                 size='lg'
                                 width='full'
                                 mt='2'
+                                border={'1px solid'}
+                                borderColor={'whiteAlpha.500'}
                             >
                                 Submit
                             </Button>
