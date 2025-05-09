@@ -26,14 +26,21 @@ interface Props {
     }) => void;
 }
 
-const FormFieldsSchema = z.object({
-    name: z.string().min(1, 'Please enter a Name'),
-    password: z.string().min(4, 'Password must be at least 4 characters long'),
-    confirmPassword: z.string().min(4, 'Please confirm your password'),
-    hobbies: z
-        .array(z.object({ label: z.string(), value: z.string() }))
-        .nonempty('Please select at least one interest'),
-});
+const FormFieldsSchema = z
+    .object({
+        name: z.string().min(1, 'Please enter a Name'),
+        password: z
+            .string()
+            .min(4, 'Password must be at least 4 characters long'),
+        confirmPassword: z.string().min(4, 'Please confirm your password'),
+        hobbies: z
+            .array(z.object({ label: z.string(), value: z.string() }))
+            .nonempty('Please select at least one interest'),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+        message: 'Passwords do not match',
+        path: ['confirmPassword'],
+    });
 
 type FormFields = z.infer<typeof FormFieldsSchema>;
 
@@ -135,16 +142,14 @@ const RegisterStepOne = (props: Props) => {
                         />
                     </Image>
                 </Button>
-                Register
+                Step One User Info
             </Text>
 
             <form className='tutorial gap-2' onSubmit={handleSubmit(onSubmit)}>
                 <div className='relative flex flex-col'>
                     <Input
                         mb='2'
-                        {...register('name', {
-                            required: 'Please enter a Name',
-                        })}
+                        {...register('name')}
                         type='text'
                         placeholder='Name'
                         defaultValue={userInfo?.name}
@@ -159,9 +164,7 @@ const RegisterStepOne = (props: Props) => {
                     <Input
                         mb='2'
                         mt='4'
-                        {...register('password', {
-                            required: 'Please enter a password',
-                        })}
+                        {...register('password')}
                         type='password'
                         placeholder='Password'
                         defaultValue={userInfo?.password}
@@ -176,9 +179,7 @@ const RegisterStepOne = (props: Props) => {
                     <Input
                         mt='4'
                         mb='2'
-                        {...register('confirmPassword', {
-                            required: 'Please confirm your password',
-                        })}
+                        {...register('confirmPassword')}
                         type='password'
                         placeholder='Confirm Password'
                         defaultValue={userInfo?.confirmPassword}

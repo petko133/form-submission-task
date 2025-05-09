@@ -12,11 +12,21 @@ import BackIcon from '../../public/back-icon.svg';
 import NextImage from 'next/image';
 import { LuFileImage, LuX } from 'react-icons/lu';
 import { Controller, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface Props {
     setStep: (step: string) => void;
     setAvatar: (avatar: string) => void;
 }
+
+const FileUploadSchema = z.object({
+    avatar: z.any().refine((file) => file.length > 0, {
+        message: 'Please upload an image',
+    }),
+});
+
+type FileUploadSchemaType = z.infer<typeof FileUploadSchema>;
 
 const FileUploadList = () => {
     const fileUpload = useFileUploadContext();
@@ -53,10 +63,12 @@ const RegisterStepTwo = (props: Props) => {
 
     const {
         control,
+        register,
         handleSubmit,
-        setError,
         formState: { errors },
-    } = useForm();
+    } = useForm<FileUploadSchemaType>({
+        resolver: zodResolver(FileUploadSchema),
+    });
 
     const convert2base64 = (file: File) => {
         const reader = new FileReader();
@@ -72,13 +84,6 @@ const RegisterStepTwo = (props: Props) => {
     };
 
     const onSubmit = () => {
-        if (!file) {
-            setError('avatar', {
-                message: 'Please upload an image',
-            });
-            return;
-        }
-
         if (file) {
             convert2base64(file);
             setStep('review');
@@ -113,10 +118,7 @@ const RegisterStepTwo = (props: Props) => {
                         />
                     </Image>
                 </Button>
-                Register
-            </Text>
-            <Text fontSize='md' mb='2'>
-                Upload your profile picture
+                Step Two Upload an Avatar
             </Text>
 
             <form action='' onSubmit={handleSubmit(onSubmit)}>
@@ -127,6 +129,7 @@ const RegisterStepTwo = (props: Props) => {
                         <>
                             <FileUpload.Root
                                 {...field}
+                                {...register('avatar')}
                                 mb='2'
                                 accept='image/*'
                                 display={'flex'}

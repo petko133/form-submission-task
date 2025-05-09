@@ -51,7 +51,8 @@ export default function Home() {
         <>
             <header></header>
             <section>
-                <div className='w-full h-screen flex flex-col items-center justify-center px-8!'>
+                <div className='w-full h-screen relative flex flex-col items-center justify-center px-8! overflow-hidden'>
+                    <div className='background w-full! h-full!'></div>
                     <div className='mb-8!'>
                         <h1 className='text-3xl! font-bold! text-center mb-4!'>
                             Welcome to the Registration Page
