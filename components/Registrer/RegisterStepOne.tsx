@@ -14,11 +14,15 @@ interface Props {
         | {
               name: string;
               hobbies: { label: string; value: string }[];
+              password: string;
+              confirmPassword: string;
           }
         | undefined;
     setUserInfo: (userInfo: {
         name: string;
         hobbies: { label: string; value: string }[];
+        password: string;
+        confirmPassword: string;
     }) => void;
 }
 
@@ -34,10 +38,12 @@ const FormFieldsSchema = z.object({
 type FormFields = z.infer<typeof FormFieldsSchema>;
 
 const RegisterStepOne = (props: Props) => {
-    const { setStep, setUserInfo } = props;
+    const { setStep, setUserInfo, userInfo } = props;
     const [hobbies, setHobbies] = useState<{ label: string; value: string }[]>(
         []
     );
+
+    console.log('userInfo', userInfo);
 
     const [selectedOptions, setSelectedOptions] = useState<
         { label: string; value: string }[]
@@ -50,6 +56,12 @@ const RegisterStepOne = (props: Props) => {
         setError,
         formState: { errors, isSubmitting },
     } = useForm<FormFields>({
+        defaultValues: {
+            name: userInfo?.name || '',
+            password: userInfo?.password || '',
+            confirmPassword: userInfo?.confirmPassword || '',
+            hobbies: userInfo?.hobbies || [],
+        },
         resolver: zodResolver(FormFieldsSchema),
     });
 
@@ -71,6 +83,8 @@ const RegisterStepOne = (props: Props) => {
         setUserInfo({
             name: data.name,
             hobbies: data.hobbies,
+            password: data.password,
+            confirmPassword: data.confirmPassword,
         });
 
         setStep('registerStepTwo');
@@ -135,6 +149,7 @@ const RegisterStepOne = (props: Props) => {
                     })}
                     type='text'
                     placeholder='Name'
+                    defaultValue={userInfo?.name}
                 />
                 {errors.name && (
                     <div className='text-red-500 text-base!'>
@@ -149,6 +164,7 @@ const RegisterStepOne = (props: Props) => {
                     })}
                     type='password'
                     placeholder='Password'
+                    defaultValue={userInfo?.password}
                 />
                 {errors.password && (
                     <div className='text-red-500 text-base!'>
@@ -163,6 +179,7 @@ const RegisterStepOne = (props: Props) => {
                     })}
                     type='password'
                     placeholder='Confirm Password'
+                    defaultValue={userInfo?.confirmPassword}
                 />
                 {errors.confirmPassword && (
                     <div className='text-red-500 text-base!'>
@@ -181,7 +198,7 @@ const RegisterStepOne = (props: Props) => {
                                         'Please select at least one interest',
                                 })}
                                 isMulti
-                                value={selectedOptions}
+                                value={userInfo?.hobbies || selectedOptions}
                                 variant={'outline'}
                                 onChange={(selected) => {
                                     setSelectedOptions(
@@ -190,6 +207,16 @@ const RegisterStepOne = (props: Props) => {
                                             value: string;
                                         }[]
                                     );
+                                    setUserInfo({
+                                        name: userInfo?.name || '',
+                                        password: userInfo?.password || '',
+                                        confirmPassword:
+                                            userInfo?.confirmPassword || '',
+                                        hobbies: selected as {
+                                            label: string;
+                                            value: string;
+                                        }[],
+                                    });
                                     if (selected.length <= 2) {
                                         field.onChange(selected);
                                     }

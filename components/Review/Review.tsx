@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Image } from '@chakra-ui/react';
+import { Box, Button, Image } from '@chakra-ui/react';
 import NextImage from 'next/image';
 
 interface Props {
@@ -10,10 +10,27 @@ interface Props {
               hobbies: { label: string; value: string }[];
           }
         | undefined;
+    setUserInfo: (userInfo: {
+        name: string;
+        hobbies: { label: string; value: string }[];
+        password: string;
+        confirmPassword: string;
+    }) => void;
+    setStep: (step: string) => void;
 }
 
 const Review = (props: Props) => {
-    const { avatar, userInfo } = props;
+    const { avatar, userInfo, setStep, setUserInfo } = props;
+
+    const handleReset = () => {
+        setUserInfo({
+            name: '',
+            hobbies: [],
+            password: '',
+            confirmPassword: '',
+        });
+        setStep('registerStepOne');
+    };
 
     return (
         <Box
@@ -21,20 +38,28 @@ const Review = (props: Props) => {
             flexDirection='column'
             alignItems='center'
             justifyContent='center'
-            width='100%'
-            height='100%'
         >
-            {avatar ? (
-                <Image alt='avatar' asChild>
-                    <NextImage
-                        alt='avatar'
-                        src={avatar ? avatar : '/default-avatar.png'}
-                        width={100}
-                        height={100}
-                        className='rounded-full'
-                    />
-                </Image>
-            ) : null}
+            <Box
+                display='flex'
+                alignItems='center'
+                justifyContent='center'
+                width='100%'
+                height='100%'
+            >
+                {avatar ? (
+                    <Image alt='avatar' asChild>
+                        <NextImage
+                            alt='avatar'
+                            src={avatar}
+                            width={150}
+                            height={150}
+                            className='rounded-full aspect-square'
+                        />
+                    </Image>
+                ) : (
+                    'No avatar selected'
+                )}
+            </Box>
             <Box mt={4} textAlign='center'>
                 <h2 className='text-2xl font-bold'>{userInfo?.name}</h2>
                 <p className='text-gray-600'>
@@ -46,6 +71,18 @@ const Review = (props: Props) => {
                         : 'No interests selected'}
                 </p>
             </Box>
+
+            <Button
+                mt='4'
+                type='submit'
+                colorPalette='teal'
+                variant='subtle'
+                size='lg'
+                width='full'
+                onClick={handleReset}
+            >
+                Reset
+            </Button>
         </Box>
     );
 };

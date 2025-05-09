@@ -11,6 +11,8 @@ export default function Home() {
     const [step, setStep] = useState('home');
     const [userInfo, setUserInfo] = useState<{
         name: string;
+        password: string;
+        confirmPassword: string;
         hobbies: { label: string; value: string }[];
     }>();
     const [avatar, setAvatar] = useState<string | null>(null);
@@ -32,7 +34,14 @@ export default function Home() {
                     <RegisterStepTwo setStep={setStep} setAvatar={setAvatar} />
                 );
             case 'review':
-                return <Review avatar={avatar} userInfo={userInfo} />;
+                return (
+                    <Review
+                        avatar={avatar}
+                        userInfo={userInfo}
+                        setUserInfo={setUserInfo}
+                        setStep={setStep}
+                    />
+                );
             default:
                 return <HomePage setStep={setStep} />;
         }
