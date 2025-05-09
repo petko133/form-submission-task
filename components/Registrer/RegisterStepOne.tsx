@@ -8,21 +8,30 @@ import { Select } from 'chakra-react-select';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-const FormFieldsSchema = z.object({
-    name: z.string().min(1, 'Please enter a Name'),
-    password: z.string().min(4, 'Password must be at least 4 characters long'),
-    confirmPassword: z.string().min(4, 'Please confirm your password'),
-    hobbies: z.array(z.object({ label: z.string(), value: z.string() })),
-});
-type FormFields = z.infer<typeof FormFieldsSchema>;
-
 interface Props {
     setStep: (step: string) => void;
+    userInfo:
+        | {
+              name: string;
+              hobbies: { label: string; value: string }[];
+          }
+        | undefined;
     setUserInfo: (userInfo: {
         name: string;
         hobbies: { label: string; value: string }[];
     }) => void;
 }
+
+const FormFieldsSchema = z.object({
+    name: z.string().min(1, 'Please enter a Name'),
+    password: z.string().min(4, 'Password must be at least 4 characters long'),
+    confirmPassword: z.string().min(4, 'Please confirm your password'),
+    hobbies: z
+        .array(z.object({ label: z.string(), value: z.string() }))
+        .nonempty('Please select at least one interest'),
+});
+
+type FormFields = z.infer<typeof FormFieldsSchema>;
 
 const RegisterStepOne = (props: Props) => {
     const { setStep, setUserInfo } = props;
@@ -128,7 +137,7 @@ const RegisterStepOne = (props: Props) => {
                     placeholder='Name'
                 />
                 {errors.name && (
-                    <div className='text-red-500 text-base! mb-2!'>
+                    <div className='text-red-500 text-base!'>
                         {errors.name.message}
                     </div>
                 )}
@@ -142,7 +151,7 @@ const RegisterStepOne = (props: Props) => {
                     placeholder='Password'
                 />
                 {errors.password && (
-                    <div className='text-red-500 text-base! mb-2!'>
+                    <div className='text-red-500 text-base!'>
                         {errors.password.message}
                     </div>
                 )}
@@ -156,44 +165,56 @@ const RegisterStepOne = (props: Props) => {
                     placeholder='Confirm Password'
                 />
                 {errors.confirmPassword && (
-                    <div className='text-red-500 text-base! mb-2!'>
+                    <div className='text-red-500 text-base!'>
                         {errors.confirmPassword.message}
                     </div>
                 )}
                 <Controller
                     name='hobbies'
                     control={control}
-                    render={({ field }) => (
-                        <Select
-                            {...field}
-                            isMulti
-                            value={selectedOptions}
-                            variant={'outline'}
-                            // selectedOptionColorPalette={'teal'}
-                            onChange={(selected) => {
-                                setSelectedOptions(
-                                    selected as {
-                                        label: string;
-                                        value: string;
-                                    }[]
-                                );
-                                if (selected.length <= 2) {
-                                    field.onChange(selected);
+                    render={({ field, fieldState: { invalid } }) => (
+                        <>
+                            <Select
+                                {...field}
+                                {...register('hobbies', {
+                                    required:
+                                        'Please select at least one interest',
+                                })}
+                                isMulti
+                                value={selectedOptions}
+                                variant={'outline'}
+                                onChange={(selected) => {
+                                    setSelectedOptions(
+                                        selected as {
+                                            label: string;
+                                            value: string;
+                                        }[]
+                                    );
+                                    if (selected.length <= 2) {
+                                        field.onChange(selected);
+                                    }
+                                }}
+                                options={hobbies}
+                                closeMenuOnSelect={false}
+                                placeholder='Select your “Interests”'
+                                // only allow user to choose up to 2 options
+                                isOptionDisabled={() =>
+                                    selectedOptions.length >= 2
                                 }
-                            }}
-                            options={hobbies}
-                            closeMenuOnSelect={false}
-                            placeholder='Select your “Interests”'
-                            // only allow user to choose up to 2 options
-                            isOptionDisabled={() => selectedOptions.length >= 2}
-                            className='basic-multi-select my-4!'
-                            classNamePrefix='select'
-                        />
+                                className='basic-multi-select mt-4!'
+                                classNamePrefix='select'
+                            />
+                            {invalid && (
+                                <div className='text-red-500 text-base!'>
+                                    Please select at least one interest
+                                </div>
+                            )}
+                        </>
                     )}
                 />
 
                 <Button
-                    mb='4'
+                    my='4'
                     type='submit'
                     colorPalette='teal'
                     variant='subtle'
@@ -204,7 +225,7 @@ const RegisterStepOne = (props: Props) => {
                     {isSubmitting ? 'Loading...' : 'Next'}
                 </Button>
                 {errors.root && (
-                    <div className='text-red-500 text-base! mb-2!'>
+                    <div className='text-red-500 text-base!'>
                         {errors.root.message}
                     </div>
                 )}

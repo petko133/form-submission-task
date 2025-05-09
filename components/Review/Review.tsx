@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image } from '@chakra-ui/react';
+import { Box, Image } from '@chakra-ui/react';
 import NextImage from 'next/image';
 
 interface Props {
@@ -16,7 +16,14 @@ const Review = (props: Props) => {
     const { avatar, userInfo } = props;
 
     return (
-        <div>
+        <Box
+            display='flex'
+            flexDirection='column'
+            alignItems='center'
+            justifyContent='center'
+            width='100%'
+            height='100%'
+        >
             {avatar ? (
                 <Image alt='avatar' asChild>
                     <NextImage
@@ -28,7 +35,18 @@ const Review = (props: Props) => {
                     />
                 </Image>
             ) : null}
-        </div>
+            <Box mt={4} textAlign='center'>
+                <h2 className='text-2xl font-bold'>{userInfo?.name}</h2>
+                <p className='text-gray-600'>
+                    Interests:{' '}
+                    {userInfo?.hobbies
+                        ? userInfo.hobbies
+                              .map((hobby) => hobby.label)
+                              .join(', ')
+                        : 'No interests selected'}
+                </p>
+            </Box>
+        </Box>
     );
 };
 

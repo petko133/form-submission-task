@@ -23,6 +23,7 @@ export default function Home() {
                 return (
                     <RegisterStepOne
                         setStep={setStep}
+                        userInfo={userInfo}
                         setUserInfo={setUserInfo}
                     />
                 );

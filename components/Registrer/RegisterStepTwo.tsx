@@ -12,18 +12,11 @@ import BackIcon from '../../public/back-icon.svg';
 import NextImage from 'next/image';
 import { LuFileImage, LuX } from 'react-icons/lu';
 import { Controller, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 interface Props {
     setStep: (step: string) => void;
     setAvatar: (avatar: string) => void;
 }
-
-const FormFieldsSchema = z.object({
-    avatar: z.string(),
-});
-type FormFields = z.infer<typeof FormFieldsSchema>;
 
 const FileUploadList = () => {
     const fileUpload = useFileUploadContext();
@@ -58,9 +51,12 @@ const RegisterStepTwo = (props: Props) => {
     const { setStep, setAvatar } = props;
     const [file, setFile] = useState<File>();
 
-    const { control, handleSubmit } = useForm<FormFields>({
-        resolver: zodResolver(FormFieldsSchema),
-    });
+    const {
+        control,
+        handleSubmit,
+        setError,
+        formState: { errors },
+    } = useForm();
 
     const convert2base64 = (file: File) => {
         const reader = new FileReader();
@@ -76,6 +72,13 @@ const RegisterStepTwo = (props: Props) => {
     };
 
     const onSubmit = () => {
+        if (!file) {
+            setError('avatar', {
+                message: 'Please upload an image',
+            });
+            return;
+        }
+
         if (file) {
             convert2base64(file);
             setStep('review');
@@ -124,7 +127,7 @@ const RegisterStepTwo = (props: Props) => {
                         <>
                             <FileUpload.Root
                                 {...field}
-                                mb='4'
+                                mb='2'
                                 accept='image/*'
                                 display={'flex'}
                                 w='full'
@@ -143,12 +146,20 @@ const RegisterStepTwo = (props: Props) => {
                                 </FileUpload.Trigger>
                                 <FileUploadList />
                             </FileUpload.Root>
+                            {errors.avatar && (
+                                <div className='text-red-500 text-base! mb-2! text-center'>
+                                    {typeof errors.avatar?.message ===
+                                        'string' && errors.avatar.message}
+                                </div>
+                            )}
+
                             <Button
                                 type='submit'
                                 colorPalette='teal'
                                 variant='subtle'
                                 size='lg'
                                 width='full'
+                                mt='2'
                             >
                                 Submit
                             </Button>
