@@ -147,12 +147,11 @@ const RegisterStepTwo = (props: Props) => {
                                 <FileUploadList />
                             </FileUpload.Root>
                             {errors.avatar && (
-                                <div className='text-red-500 text-base! mb-2! text-center'>
+                                <span className='text-red-500 text-base! mb-2! text-center'>
                                     {typeof errors.avatar?.message ===
                                         'string' && errors.avatar.message}
-                                </div>
+                                </span>
                             )}
-
                             <Button
                                 type='submit'
                                 colorPalette='teal'

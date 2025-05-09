@@ -11,8 +11,8 @@ const HomePage = (props: Props) => {
 
     return (
         <>
-            <Text fontSize='xl' mb='4'>
-                Hello, would you like to register ?
+            <Text fontSize='xl' mb='4' textAlign={'center'}>
+                Click on the button below to start the registration process.
             </Text>
             <Button
                 colorPalette='teal'

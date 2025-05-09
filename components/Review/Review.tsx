@@ -71,7 +71,6 @@ const Review = (props: Props) => {
                         : 'No interests selected'}
                 </p>
             </Box>
-
             <Button
                 mt='4'
                 type='submit'

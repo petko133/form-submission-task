@@ -42,9 +42,6 @@ const RegisterStepOne = (props: Props) => {
     const [hobbies, setHobbies] = useState<{ label: string; value: string }[]>(
         []
     );
-
-    console.log('userInfo', userInfo);
-
     const [selectedOptions, setSelectedOptions] = useState<
         { label: string; value: string }[]
     >([]);
@@ -101,17 +98,17 @@ const RegisterStepOne = (props: Props) => {
         } catch (error) {
             console.error('Error fetching hobbies:', error);
             const hobbies = [
-                { label: 'React.js', value: 'react' },
-                { label: 'Vue.js', value: 'vue' },
-                { label: 'Angular', value: 'angular' },
-                { label: 'Svelte', value: 'svelte' },
+                { label: 'Fishing', value: 'fishing' },
+                { label: 'Cycling', value: 'cycling' },
+                { label: 'Swimming', value: 'swimming' },
+                { label: 'Dancing', value: 'dancing' },
             ];
             setHobbies(hobbies);
         }
     }, []);
 
     return (
-        <div>
+        <>
             <Text
                 fontSize='xl'
                 flex='1'
@@ -142,55 +139,61 @@ const RegisterStepOne = (props: Props) => {
             </Text>
 
             <form className='tutorial gap-2' onSubmit={handleSubmit(onSubmit)}>
-                <Input
-                    mb='2'
-                    {...register('name', {
-                        required: 'Please enter a Name',
-                    })}
-                    type='text'
-                    placeholder='Name'
-                    defaultValue={userInfo?.name}
-                />
-                {errors.name && (
-                    <div className='text-red-500 text-base!'>
-                        {errors.name.message}
-                    </div>
-                )}
-                <Input
-                    mb='2'
-                    mt='4'
-                    {...register('password', {
-                        required: 'Please enter a password',
-                    })}
-                    type='password'
-                    placeholder='Password'
-                    defaultValue={userInfo?.password}
-                />
-                {errors.password && (
-                    <div className='text-red-500 text-base!'>
-                        {errors.password.message}
-                    </div>
-                )}
-                <Input
-                    mt='4'
-                    mb='2'
-                    {...register('confirmPassword', {
-                        required: 'Please confirm your password',
-                    })}
-                    type='password'
-                    placeholder='Confirm Password'
-                    defaultValue={userInfo?.confirmPassword}
-                />
-                {errors.confirmPassword && (
-                    <div className='text-red-500 text-base!'>
-                        {errors.confirmPassword.message}
-                    </div>
-                )}
+                <div className='relative flex flex-col'>
+                    <Input
+                        mb='2'
+                        {...register('name', {
+                            required: 'Please enter a Name',
+                        })}
+                        type='text'
+                        placeholder='Name'
+                        defaultValue={userInfo?.name}
+                    />
+                    {errors.name && (
+                        <span className='text-red-500 text-sm! absolute -bottom-3 left-3'>
+                            {errors.name.message}
+                        </span>
+                    )}
+                </div>
+                <div className='relative flex flex-col'>
+                    <Input
+                        mb='2'
+                        mt='4'
+                        {...register('password', {
+                            required: 'Please enter a password',
+                        })}
+                        type='password'
+                        placeholder='Password'
+                        defaultValue={userInfo?.password}
+                    />
+                    {errors.password && (
+                        <span className='text-red-500 text-sm! absolute -bottom-3 left-3'>
+                            {errors.password.message}
+                        </span>
+                    )}
+                </div>
+                <div className='relative flex flex-col'>
+                    <Input
+                        mt='4'
+                        mb='2'
+                        {...register('confirmPassword', {
+                            required: 'Please confirm your password',
+                        })}
+                        type='password'
+                        placeholder='Confirm Password'
+                        defaultValue={userInfo?.confirmPassword}
+                    />
+                    {errors.confirmPassword && (
+                        <span className='text-red-500 text-sm! absolute -bottom-3 left-3'>
+                            {errors.confirmPassword.message}
+                        </span>
+                    )}
+                </div>
                 <Controller
                     name='hobbies'
                     control={control}
                     render={({ field, fieldState: { invalid } }) => (
-                        <>
+                        <div className='relative flex flex-col'>
                             <Select
                                 {...field}
                                 {...register('hobbies', {
@@ -224,7 +227,6 @@ const RegisterStepOne = (props: Props) => {
                                 options={hobbies}
                                 closeMenuOnSelect={false}
                                 placeholder='Select your “Interests”'
-                                // only allow user to choose up to 2 options
                                 isOptionDisabled={() =>
                                     selectedOptions.length >= 2
                                 }
@@ -232,16 +234,15 @@ const RegisterStepOne = (props: Props) => {
                                 classNamePrefix='select'
                             />
                             {invalid && (
-                                <div className='text-red-500 text-base!'>
+                                <span className='text-red-500 text-sm! absolute -bottom-5 left-3'>
                                     Please select at least one interest
-                                </div>
+                                </span>
                             )}
-                        </>
+                        </div>
                     )}
                 />
-
                 <Button
-                    my='4'
+                    mt='8'
                     type='submit'
                     colorPalette='teal'
                     variant='subtle'
@@ -252,12 +253,12 @@ const RegisterStepOne = (props: Props) => {
                     {isSubmitting ? 'Loading...' : 'Next'}
                 </Button>
                 {errors.root && (
-                    <div className='text-red-500 text-base!'>
+                    <span className='text-red-500 text-sm! absolute -bottom-3 left-3'>
                         {errors.root.message}
-                    </div>
+                    </span>
                 )}
             </form>
-        </div>
+        </>
     );
 };
 
