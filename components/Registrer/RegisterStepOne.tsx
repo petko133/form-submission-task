@@ -9,7 +9,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const FormFieldsSchema = z.object({
-    name: z.string().min(1, 'Please enter a username'),
+    name: z.string().min(1, 'Please enter a Name'),
     password: z.string().min(4, 'Password must be at least 4 characters long'),
     confirmPassword: z.string().min(4, 'Please confirm your password'),
     hobbies: z.array(z.object({ label: z.string(), value: z.string() })),
@@ -18,10 +18,14 @@ type FormFields = z.infer<typeof FormFieldsSchema>;
 
 interface Props {
     setStep: (step: string) => void;
+    setUserInfo: (userInfo: {
+        name: string;
+        hobbies: { label: string; value: string }[];
+    }) => void;
 }
 
 const RegisterStepOne = (props: Props) => {
-    const { setStep } = props;
+    const { setStep, setUserInfo } = props;
     const [hobbies, setHobbies] = useState<{ label: string; value: string }[]>(
         []
     );
@@ -54,6 +58,11 @@ const RegisterStepOne = (props: Props) => {
             });
             return;
         }
+
+        setUserInfo({
+            name: data.name,
+            hobbies: data.hobbies,
+        });
 
         setStep('registerStepTwo');
     };
@@ -113,10 +122,10 @@ const RegisterStepOne = (props: Props) => {
                 <Input
                     mb='2'
                     {...register('name', {
-                        required: 'Please enter a username',
+                        required: 'Please enter a Name',
                     })}
                     type='text'
-                    placeholder='Username'
+                    placeholder='Name'
                 />
                 {errors.name && (
                     <div className='text-red-500 text-base! mb-2!'>

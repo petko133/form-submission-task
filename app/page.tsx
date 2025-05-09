@@ -9,17 +9,29 @@ import Review from '@/components/Review/Review';
 
 export default function Home() {
     const [step, setStep] = useState('home');
+    const [userInfo, setUserInfo] = useState<{
+        name: string;
+        hobbies: { label: string; value: string }[];
+    }>();
+    const [avatar, setAvatar] = useState<string | null>(null);
 
     const renderSteps = () => {
         switch (step) {
             case 'home':
                 return <HomePage setStep={setStep} />;
             case 'registerStepOne':
-                return <RegisterStepOne setStep={setStep} />;
+                return (
+                    <RegisterStepOne
+                        setStep={setStep}
+                        setUserInfo={setUserInfo}
+                    />
+                );
             case 'registerStepTwo':
-                return <RegisterStepTwo setStep={setStep} />;
+                return (
+                    <RegisterStepTwo setStep={setStep} setAvatar={setAvatar} />
+                );
             case 'review':
-                return <Review />;
+                return <Review avatar={avatar} userInfo={userInfo} />;
             default:
                 return <HomePage setStep={setStep} />;
         }
