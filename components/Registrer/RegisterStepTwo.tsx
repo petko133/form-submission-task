@@ -183,6 +183,9 @@ const RegisterStepTwo = (props: Props) => {
                                         w='2/3'
                                         border={'1px solid'}
                                         borderColor={'whiteAlpha.500'}
+                                        _hover={{
+                                            background: 'whiteAlpha.200',
+                                        }}
                                     >
                                         <LuFileImage /> Upload Images
                                     </Button>

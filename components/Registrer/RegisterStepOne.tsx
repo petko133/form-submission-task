@@ -1,5 +1,13 @@
 'use client';
-import { Button, Image, Input, Text } from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    defineStyle,
+    Field,
+    Image,
+    Input,
+    Text,
+} from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import BackIcon from '../../public/back-icon.svg';
 import NextImage from 'next/image';
@@ -7,6 +15,34 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Select } from 'chakra-react-select';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+
+export const floatingStyles = defineStyle({
+    pos: 'absolute',
+    top: '-3',
+    insetStart: '2',
+    fontWeight: 'normal',
+    pointerEvents: 'none',
+    transition: 'position',
+    color: 'fg',
+    bg: 'fg.muted',
+    rounded: 'md',
+    px: '2',
+    _peerPlaceholderShown: {
+        color: 'fg.muted',
+        bg: 'transparent',
+        top: '2.5',
+        insetStart: '3',
+    },
+    _peerFocusVisible: {
+        color: 'fg',
+        top: '-3',
+        insetStart: '2',
+        bg: 'fg.muted',
+        rounded: 'md',
+        px: '2',
+        fontWeight: 'normal',
+    },
+});
 
 interface Props {
     setStep: (step: string) => void;
@@ -147,14 +183,19 @@ const RegisterStepOne = (props: Props) => {
 
             <form className='tutorial gap-2' onSubmit={handleSubmit(onSubmit)}>
                 <div className='relative flex flex-col'>
-                    <Input
-                        borderColor={'whiteAlpha.500'}
-                        mb='2'
-                        {...register('name')}
-                        type='text'
-                        placeholder='Name'
-                        defaultValue={userInfo?.name}
-                    />
+                    <Field.Root>
+                        <Box pos='relative' w='full' mb='2'>
+                            <Input
+                                borderColor={'whiteAlpha.500'}
+                                {...register('name')}
+                                type='text'
+                                className='peer'
+                                placeholder=''
+                                defaultValue={userInfo?.name}
+                            />
+                            <Field.Label css={floatingStyles}>Name</Field.Label>
+                        </Box>
+                    </Field.Root>
                     {errors.name && (
                         <span className='text-red-500 text-sm! absolute -bottom-3 left-3'>
                             {errors.name.message}
@@ -162,15 +203,21 @@ const RegisterStepOne = (props: Props) => {
                     )}
                 </div>
                 <div className='relative flex flex-col'>
-                    <Input
-                        borderColor={'whiteAlpha.500'}
-                        mb='2'
-                        mt='4'
-                        {...register('password')}
-                        type='password'
-                        placeholder='Password'
-                        defaultValue={userInfo?.password}
-                    />
+                    <Field.Root>
+                        <Box pos='relative' w='full' mb='2' mt='6'>
+                            <Input
+                                borderColor={'whiteAlpha.500'}
+                                {...register('password')}
+                                type='password'
+                                placeholder=''
+                                defaultValue={userInfo?.password}
+                                className='peer'
+                            />
+                            <Field.Label css={floatingStyles}>
+                                Password
+                            </Field.Label>
+                        </Box>
+                    </Field.Root>
                     {errors.password && (
                         <span className='text-red-500 text-sm! absolute -bottom-3 left-3'>
                             {errors.password.message}
@@ -178,15 +225,21 @@ const RegisterStepOne = (props: Props) => {
                     )}
                 </div>
                 <div className='relative flex flex-col'>
-                    <Input
-                        borderColor={'whiteAlpha.500'}
-                        mt='4'
-                        mb='2'
-                        {...register('confirmPassword')}
-                        type='password'
-                        placeholder='Confirm Password'
-                        defaultValue={userInfo?.confirmPassword}
-                    />
+                    <Field.Root>
+                        <Box pos='relative' w='full' mb='2' mt='6'>
+                            <Input
+                                borderColor={'whiteAlpha.500'}
+                                {...register('confirmPassword')}
+                                type='password'
+                                placeholder=''
+                                defaultValue={userInfo?.confirmPassword}
+                                className='peer'
+                            />
+                            <Field.Label css={floatingStyles}>
+                                Confirm Password
+                            </Field.Label>
+                        </Box>
+                    </Field.Root>
                     {errors.confirmPassword && (
                         <span className='text-red-500 text-sm! absolute -bottom-3 left-3'>
                             {errors.confirmPassword.message}
@@ -234,7 +287,7 @@ const RegisterStepOne = (props: Props) => {
                                 isOptionDisabled={() =>
                                     selectedOptions.length >= 2
                                 }
-                                className='basic-multi-select mt-4! border-white!'
+                                className='basic-multi-select mt-6! border-white!'
                                 classNamePrefix='select'
                                 styles={{}}
                             />

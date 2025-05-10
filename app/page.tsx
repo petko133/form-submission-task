@@ -57,7 +57,7 @@ export default function Home() {
             <header></header>
             <section>
                 <div className='w-full h-screen relative flex flex-col items-center justify-center px-8! overflow-hidden'>
-                    <div className='background aspect-square'></div>
+                    <div className='background aspect-square -z-50!'></div>
                     <Provider>
                         <div className='mb-8!'>
                             <Heading
