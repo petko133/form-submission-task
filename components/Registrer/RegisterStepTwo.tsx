@@ -14,6 +14,7 @@ import { LuFileImage, LuX } from 'react-icons/lu';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 
 interface Props {
     setStep: (step: string) => void;
@@ -103,19 +104,12 @@ const RegisterStepTwo = (props: Props) => {
         // Mock API call
         try {
             const sendData = async () => {
-                const response = await fetch('/api/form', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name: userInfo?.name,
-                        hobbies: userInfo?.hobbies,
-                        avatar: avatar,
-                    }),
+                const response = await axios.post('/api/form', {
+                    name: userInfo?.name,
+                    hobbies: userInfo?.hobbies,
+                    avatar: avatar,
                 });
-                const data = await response.json();
-                console.log(data);
+                console.log(response.data);
             };
             sendData();
             setStep('review');

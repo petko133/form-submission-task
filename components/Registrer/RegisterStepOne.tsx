@@ -8,7 +8,7 @@ import {
     Input,
     Text,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import BackIcon from '../../public/back-icon.svg';
 import NextImage from 'next/image';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -60,6 +60,7 @@ interface Props {
         password: string;
         confirmPassword: string;
     }) => void;
+    hobbies: { label: string; value: string }[];
 }
 
 const FormFieldsSchema = z
@@ -81,10 +82,7 @@ const FormFieldsSchema = z
 type FormFields = z.infer<typeof FormFieldsSchema>;
 
 const RegisterStepOne = (props: Props) => {
-    const { setStep, setUserInfo, userInfo } = props;
-    const [hobbies, setHobbies] = useState<{ label: string; value: string }[]>(
-        []
-    );
+    const { setStep, setUserInfo, userInfo, hobbies } = props;
     const [selectedOptions, setSelectedOptions] = useState<
         { label: string; value: string }[]
     >([]);
@@ -120,6 +118,8 @@ const RegisterStepOne = (props: Props) => {
             return;
         }
 
+        console.log('Form data:', data);
+
         setUserInfo({
             name: data.name,
             hobbies: data.hobbies,
@@ -129,26 +129,6 @@ const RegisterStepOne = (props: Props) => {
 
         setStep('registerStepTwo');
     };
-
-    useEffect(() => {
-        try {
-            const getHobbies = async () => {
-                const response = await fetch('/api/hobbies');
-                const data = await response.json();
-                setHobbies(data.body);
-            };
-            getHobbies();
-        } catch (error) {
-            console.error('Error fetching hobbies:', error);
-            const hobbies = [
-                { label: 'Fishing', value: 'fishing' },
-                { label: 'Cycling', value: 'cycling' },
-                { label: 'Swimming', value: 'swimming' },
-                { label: 'Dancing', value: 'dancing' },
-            ];
-            setHobbies(hobbies);
-        }
-    }, []);
 
     return (
         <>
@@ -197,7 +177,7 @@ const RegisterStepOne = (props: Props) => {
                         </Box>
                     </Field.Root>
                     {errors.name && (
-                        <span className='text-red-500 text-sm! absolute -bottom-3 left-3'>
+                        <span className='text-red-500 text-sm! absolute -bottom-4 left-2'>
                             {errors.name.message}
                         </span>
                     )}
@@ -219,7 +199,7 @@ const RegisterStepOne = (props: Props) => {
                         </Box>
                     </Field.Root>
                     {errors.password && (
-                        <span className='text-red-500 text-sm! absolute -bottom-3 left-3'>
+                        <span className='text-red-500 text-sm! absolute -bottom-4 left-2'>
                             {errors.password.message}
                         </span>
                     )}
@@ -241,64 +221,66 @@ const RegisterStepOne = (props: Props) => {
                         </Box>
                     </Field.Root>
                     {errors.confirmPassword && (
-                        <span className='text-red-500 text-sm! absolute -bottom-3 left-3'>
+                        <span className='text-red-500 text-sm! absolute -bottom-4 left-2'>
                             {errors.confirmPassword.message}
                         </span>
                     )}
                 </div>
-                <Controller
-                    name='hobbies'
-                    control={control}
-                    render={({ field, fieldState: { invalid } }) => (
-                        <div className='relative flex flex-col'>
-                            <Select
-                                {...field}
-                                {...register('hobbies', {
-                                    required:
-                                        'Please select at least one interest',
-                                })}
-                                isMulti
-                                value={userInfo?.hobbies || selectedOptions}
-                                variant={'outline'}
-                                onChange={(selected) => {
-                                    setSelectedOptions(
-                                        selected as {
-                                            label: string;
-                                            value: string;
-                                        }[]
-                                    );
-                                    setUserInfo({
-                                        name: userInfo?.name || '',
-                                        password: userInfo?.password || '',
-                                        confirmPassword:
-                                            userInfo?.confirmPassword || '',
-                                        hobbies: selected as {
-                                            label: string;
-                                            value: string;
-                                        }[],
-                                    });
-                                    if (selected.length <= 2) {
-                                        field.onChange(selected);
+                <Field.Root w='full'>
+                    <Controller
+                        name='hobbies'
+                        control={control}
+                        render={({ field, fieldState: { invalid } }) => (
+                            <div className='relative flex flex-col w-full!'>
+                                <Select
+                                    {...field}
+                                    {...register('hobbies', {
+                                        required:
+                                            'Please select at least one interest',
+                                    })}
+                                    isMulti
+                                    value={userInfo?.hobbies || selectedOptions}
+                                    variant={'outline'}
+                                    onChange={(selected) => {
+                                        setSelectedOptions(
+                                            selected as {
+                                                label: string;
+                                                value: string;
+                                            }[]
+                                        );
+                                        setUserInfo({
+                                            name: userInfo?.name || '',
+                                            password: userInfo?.password || '',
+                                            confirmPassword:
+                                                userInfo?.confirmPassword || '',
+                                            hobbies: selected as {
+                                                label: string;
+                                                value: string;
+                                            }[],
+                                        });
+                                        if (selected.length <= 2) {
+                                            field.onChange(selected);
+                                        }
+                                    }}
+                                    options={hobbies}
+                                    closeMenuOnSelect={false}
+                                    placeholder='Select your “Interests”'
+                                    isOptionDisabled={() =>
+                                        selectedOptions.length >= 2
                                     }
-                                }}
-                                options={hobbies}
-                                closeMenuOnSelect={false}
-                                placeholder='Select your “Interests”'
-                                isOptionDisabled={() =>
-                                    selectedOptions.length >= 2
-                                }
-                                className='basic-multi-select mt-6! border-white!'
-                                classNamePrefix='select'
-                                styles={{}}
-                            />
-                            {invalid && (
-                                <span className='text-red-500 text-sm! absolute -bottom-5 left-3'>
-                                    Please select at least one interest
-                                </span>
-                            )}
-                        </div>
-                    )}
-                />
+                                    className='basic-multi-select mt-6! border-white!'
+                                    classNamePrefix='select'
+                                />
+                                {invalid && (
+                                    <span className='text-red-500 text-sm! absolute -bottom-6 left-2'>
+                                        Please select at least one interest
+                                    </span>
+                                )}
+                            </div>
+                        )}
+                    />
+                    <Field.Label hidden>Interests</Field.Label>
+                </Field.Root>
                 <Button
                     mt='8'
                     type='submit'
@@ -313,7 +295,7 @@ const RegisterStepOne = (props: Props) => {
                     {isSubmitting ? 'Loading...' : 'Next'}
                 </Button>
                 {errors.root && (
-                    <span className='text-red-500 text-sm! absolute -bottom-3 left-3'>
+                    <span className='text-red-500 text-sm! absolute -bottom-4 left-2'>
                         {errors.root.message}
                     </span>
                 )}

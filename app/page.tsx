@@ -1,11 +1,12 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Heading, Text } from '@chakra-ui/react';
 import HomePage from '@/components/Home/HomePage';
 import RegisterStepOne from '@/components/Registrer/RegisterStepOne';
 import RegisterStepTwo from '@/components/Registrer/RegisterStepTwo';
 import { Provider } from '@/components/ui/provider';
 import Review from '@/components/Review/Review';
+import axios from 'axios';
 
 export default function Home() {
     const [step, setStep] = useState('home');
@@ -16,6 +17,29 @@ export default function Home() {
         hobbies: { label: string; value: string }[];
     }>();
     const [avatar, setAvatar] = useState<string | null>(null);
+    const [hobbies, setHobbies] = useState<{ label: string; value: string }[]>(
+        []
+    );
+
+    useEffect(() => {
+        try {
+            const getHobbies = async () => {
+                const response = await axios.get('/api/hobbies');
+                const data = response.data.body;
+                setHobbies(data);
+            };
+            getHobbies();
+        } catch (error) {
+            console.error('Error fetching hobbies:', error);
+            const hobbies = [
+                { label: 'Fishing', value: 'fishing' },
+                { label: 'Cycling', value: 'cycling' },
+                { label: 'Swimming', value: 'swimming' },
+                { label: 'Dancing', value: 'dancing' },
+            ];
+            setHobbies(hobbies);
+        }
+    }, []);
 
     const renderSteps = () => {
         switch (step) {
@@ -27,6 +51,7 @@ export default function Home() {
                         setStep={setStep}
                         userInfo={userInfo}
                         setUserInfo={setUserInfo}
+                        hobbies={hobbies}
                     />
                 );
             case 'registerStepTwo':
