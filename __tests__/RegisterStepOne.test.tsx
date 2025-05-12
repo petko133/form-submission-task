@@ -1,5 +1,5 @@
 import { fireEvent, render } from '@testing-library/react';
-import '@testing-library/jest-dom'; // Import jest-dom matchers
+import '@testing-library/jest-dom';
 import RegisterStepOne from '@/components/Registrer/RegisterStepOne';
 import { act } from 'react';
 import { Provider } from '@/components/ui/provider';
@@ -59,12 +59,12 @@ describe('RegisterStepOne', () => {
                     ]}
                 />
             </Provider>
-        ); // ARRANGE
+        );
 
-        expect(getByLabelText('Name')).toBeInTheDocument(); // ASSERT
-        expect(getByLabelText('Password')).toBeInTheDocument(); // ASSERT
-        expect(getByLabelText('Confirm Password')).toBeInTheDocument(); // ASSERT
-        expect(getByLabelText('Interests')).toBeInTheDocument(); // ASSERT
+        expect(getByLabelText('Name')).toBeInTheDocument();
+        expect(getByLabelText('Password')).toBeInTheDocument();
+        expect(getByLabelText('Confirm Password')).toBeInTheDocument();
+        expect(getByLabelText('Interests')).toBeInTheDocument();
     });
 
     it('Valid input', async () => {
@@ -107,7 +107,7 @@ describe('RegisterStepOne', () => {
                     ]}
                 />
             </Provider>
-        ); // ARRANGE
+        );
 
         await act(async () => {
             fireEvent.change(getByLabelText('Name'), {
@@ -132,10 +132,10 @@ describe('RegisterStepOne', () => {
             );
         });
 
-        expect(getByLabelText('Name')).toHaveValue('John Doe'); // ASSERT
-        expect(getByLabelText('Password')).toHaveValue('1234'); // ASSERT
-        expect(getByLabelText('Confirm Password')).toHaveValue('1234'); // ASSERT
-        expect(getByLabelText('Interests')).toHaveValue('Reading'); // ASSERT
+        expect(getByLabelText('Name')).toHaveValue('John Doe');
+        expect(getByLabelText('Password')).toHaveValue('1234');
+        expect(getByLabelText('Confirm Password')).toHaveValue('1234');
+        expect(getByLabelText('Interests')).toHaveValue('Reading');
     });
 
     it('Invalid input', async () => {
@@ -178,7 +178,7 @@ describe('RegisterStepOne', () => {
                     ]}
                 />
             </Provider>
-        ); // ARRANGE
+        );
 
         await act(async () => {
             fireEvent.change(getByLabelText('Name'), {
@@ -253,7 +253,7 @@ describe('RegisterStepOne', () => {
                     ]}
                 />
             </Provider>
-        ); // ARRANGE
+        );
 
         await act(async () => {
             fireEvent.change(getByLabelText('Password'), {

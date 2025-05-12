@@ -91,7 +91,6 @@ const RegisterStepOne = (props: Props) => {
         control,
         register,
         handleSubmit,
-        setError,
         formState: { errors, isSubmitting },
     } = useForm<FormFields>({
         defaultValues: {
@@ -104,20 +103,6 @@ const RegisterStepOne = (props: Props) => {
     });
 
     const onSubmit: SubmitHandler<FormFields> = (data) => {
-        if (data.password.length < 4) {
-            setError('password', {
-                message: 'Password must be at least 4 characters long',
-            });
-            return;
-        }
-
-        if (data.password !== data.confirmPassword) {
-            setError('confirmPassword', {
-                message: 'Passwords do not match',
-            });
-            return;
-        }
-
         console.log('Form data:', data);
 
         setUserInfo({

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom'; // Import jest-dom matchers
+import '@testing-library/jest-dom';
 import Home from '@/app/page';
 
 Object.defineProperty(window, 'matchMedia', {
@@ -18,16 +18,17 @@ Object.defineProperty(window, 'matchMedia', {
 
 describe('Home', () => {
     it('renders the home page', () => {
-        render(<Home />); // ARRANGE
+        render(<Home />);
 
         const myElem = screen.getByText(
             'Click on the button below to start the registration process.'
-        ); // ACT
-        expect(myElem).toBeInTheDocument(); // ASSERT
+        );
+
+        expect(myElem).toBeInTheDocument();
         const button = screen.getByRole('button', {
             name: /Sign up/i,
         });
-        expect(button).toBeInTheDocument(); // ASSERT
-        expect(button).toHaveTextContent('Sign up'); // ASSERT
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveTextContent('Sign up');
     });
 });
