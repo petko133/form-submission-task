@@ -42,16 +42,16 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 describe('RegisterStepOne', () => {
-    it('renders the RegisterStepOne component', () => {
-        const setStep = jest.fn();
-        const userInfo = {
-            name: '',
-            password: '',
-            confirmPassword: '',
-            hobbies: [],
-        };
-        const setUserInfo = jest.fn();
+    const setStep = jest.fn();
+    const userInfo = {
+        name: '',
+        password: '',
+        confirmPassword: '',
+        hobbies: [],
+    };
+    const setUserInfo = jest.fn();
 
+    it('renders the RegisterStepOne component', () => {
         const { getByLabelText } = render(
             <Provider>
                 <RegisterStepOne
@@ -70,15 +70,6 @@ describe('RegisterStepOne', () => {
     });
 
     it('Valid input', async () => {
-        const setStep = jest.fn();
-        const userInfo = {
-            name: '',
-            password: '',
-            confirmPassword: '',
-            hobbies: [],
-        };
-        const setUserInfo = jest.fn();
-
         const { getByLabelText, getByRole } = render(
             <Provider>
                 <RegisterStepOne
@@ -120,15 +111,6 @@ describe('RegisterStepOne', () => {
     });
 
     it('Invalid input', async () => {
-        const setStep = jest.fn();
-        const userInfo = {
-            name: '',
-            password: '',
-            confirmPassword: '',
-            hobbies: [],
-        };
-        const setUserInfo = jest.fn();
-
         const { getByLabelText, getByRole, container } = render(
             <Provider>
                 <RegisterStepOne
@@ -174,15 +156,6 @@ describe('RegisterStepOne', () => {
     });
 
     it('Invalid cofirm password', async () => {
-        const setStep = jest.fn();
-        const userInfo = {
-            name: '',
-            password: '',
-            confirmPassword: '',
-            hobbies: [],
-        };
-        const setUserInfo = jest.fn();
-
         const { getByLabelText, getByRole, container } = render(
             <Provider>
                 <RegisterStepOne
