@@ -4,6 +4,29 @@ import RegisterStepOne from '@/components/Registrer/RegisterStepOne';
 import { act } from 'react';
 import { Provider } from '@/components/ui/provider';
 
+const hobbies = [
+    { label: 'Reading', value: 'reading' },
+    { label: 'Traveling', value: 'traveling' },
+    { label: 'Cooking', value: 'cooking' },
+    { label: 'Gardening', value: 'gardening' },
+    { label: 'Photography', value: 'photography' },
+    { label: 'Painting', value: 'painting' },
+    { label: 'Writing', value: 'writing' },
+    { label: 'Hiking', value: 'hiking' },
+    { label: 'Fishing', value: 'fishing' },
+    { label: 'Cycling', value: 'cycling' },
+    { label: 'Swimming', value: 'swimming' },
+    { label: 'Dancing', value: 'dancing' },
+    { label: 'Gaming', value: 'gaming' },
+    { label: 'Knitting', value: 'knitting' },
+    { label: 'Yoga', value: 'yoga' },
+    { label: 'Running', value: 'running' },
+    { label: 'Singing', value: 'singing' },
+    { label: 'Drawing', value: 'drawing' },
+    { label: 'Woodworking', value: 'woodworking' },
+    { label: 'Birdwatching', value: 'birdwatching' },
+];
+
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
     value: jest.fn().mockImplementation((query) => ({
@@ -35,28 +58,7 @@ describe('RegisterStepOne', () => {
                     setStep={setStep}
                     userInfo={userInfo}
                     setUserInfo={setUserInfo}
-                    hobbies={[
-                        { label: 'Reading', value: 'reading' },
-                        { label: 'Traveling', value: 'traveling' },
-                        { label: 'Cooking', value: 'cooking' },
-                        { label: 'Gardening', value: 'gardening' },
-                        { label: 'Photography', value: 'photography' },
-                        { label: 'Painting', value: 'painting' },
-                        { label: 'Writing', value: 'writing' },
-                        { label: 'Hiking', value: 'hiking' },
-                        { label: 'Fishing', value: 'fishing' },
-                        { label: 'Cycling', value: 'cycling' },
-                        { label: 'Swimming', value: 'swimming' },
-                        { label: 'Dancing', value: 'dancing' },
-                        { label: 'Gaming', value: 'gaming' },
-                        { label: 'Knitting', value: 'knitting' },
-                        { label: 'Yoga', value: 'yoga' },
-                        { label: 'Running', value: 'running' },
-                        { label: 'Singing', value: 'singing' },
-                        { label: 'Drawing', value: 'drawing' },
-                        { label: 'Woodworking', value: 'woodworking' },
-                        { label: 'Birdwatching', value: 'birdwatching' },
-                    ]}
+                    hobbies={hobbies}
                 />
             </Provider>
         );
@@ -83,28 +85,7 @@ describe('RegisterStepOne', () => {
                     setStep={setStep}
                     userInfo={userInfo}
                     setUserInfo={setUserInfo}
-                    hobbies={[
-                        { label: 'Reading', value: 'reading' },
-                        { label: 'Traveling', value: 'traveling' },
-                        { label: 'Cooking', value: 'cooking' },
-                        { label: 'Gardening', value: 'gardening' },
-                        { label: 'Photography', value: 'photography' },
-                        { label: 'Painting', value: 'painting' },
-                        { label: 'Writing', value: 'writing' },
-                        { label: 'Hiking', value: 'hiking' },
-                        { label: 'Fishing', value: 'fishing' },
-                        { label: 'Cycling', value: 'cycling' },
-                        { label: 'Swimming', value: 'swimming' },
-                        { label: 'Dancing', value: 'dancing' },
-                        { label: 'Gaming', value: 'gaming' },
-                        { label: 'Knitting', value: 'knitting' },
-                        { label: 'Yoga', value: 'yoga' },
-                        { label: 'Running', value: 'running' },
-                        { label: 'Singing', value: 'singing' },
-                        { label: 'Drawing', value: 'drawing' },
-                        { label: 'Woodworking', value: 'woodworking' },
-                        { label: 'Birdwatching', value: 'birdwatching' },
-                    ]}
+                    hobbies={hobbies}
                 />
             </Provider>
         );
@@ -154,28 +135,7 @@ describe('RegisterStepOne', () => {
                     setStep={setStep}
                     userInfo={userInfo}
                     setUserInfo={setUserInfo}
-                    hobbies={[
-                        { label: 'Reading', value: 'reading' },
-                        { label: 'Traveling', value: 'traveling' },
-                        { label: 'Cooking', value: 'cooking' },
-                        { label: 'Gardening', value: 'gardening' },
-                        { label: 'Photography', value: 'photography' },
-                        { label: 'Painting', value: 'painting' },
-                        { label: 'Writing', value: 'writing' },
-                        { label: 'Hiking', value: 'hiking' },
-                        { label: 'Fishing', value: 'fishing' },
-                        { label: 'Cycling', value: 'cycling' },
-                        { label: 'Swimming', value: 'swimming' },
-                        { label: 'Dancing', value: 'dancing' },
-                        { label: 'Gaming', value: 'gaming' },
-                        { label: 'Knitting', value: 'knitting' },
-                        { label: 'Yoga', value: 'yoga' },
-                        { label: 'Running', value: 'running' },
-                        { label: 'Singing', value: 'singing' },
-                        { label: 'Drawing', value: 'drawing' },
-                        { label: 'Woodworking', value: 'woodworking' },
-                        { label: 'Birdwatching', value: 'birdwatching' },
-                    ]}
+                    hobbies={hobbies}
                 />
             </Provider>
         );
@@ -229,28 +189,7 @@ describe('RegisterStepOne', () => {
                     setStep={setStep}
                     userInfo={userInfo}
                     setUserInfo={setUserInfo}
-                    hobbies={[
-                        { label: 'Reading', value: 'reading' },
-                        { label: 'Traveling', value: 'traveling' },
-                        { label: 'Cooking', value: 'cooking' },
-                        { label: 'Gardening', value: 'gardening' },
-                        { label: 'Photography', value: 'photography' },
-                        { label: 'Painting', value: 'painting' },
-                        { label: 'Writing', value: 'writing' },
-                        { label: 'Hiking', value: 'hiking' },
-                        { label: 'Fishing', value: 'fishing' },
-                        { label: 'Cycling', value: 'cycling' },
-                        { label: 'Swimming', value: 'swimming' },
-                        { label: 'Dancing', value: 'dancing' },
-                        { label: 'Gaming', value: 'gaming' },
-                        { label: 'Knitting', value: 'knitting' },
-                        { label: 'Yoga', value: 'yoga' },
-                        { label: 'Running', value: 'running' },
-                        { label: 'Singing', value: 'singing' },
-                        { label: 'Drawing', value: 'drawing' },
-                        { label: 'Woodworking', value: 'woodworking' },
-                        { label: 'Birdwatching', value: 'birdwatching' },
-                    ]}
+                    hobbies={hobbies}
                 />
             </Provider>
         );
