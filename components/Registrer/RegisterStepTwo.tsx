@@ -7,7 +7,7 @@ import {
     Text,
     useFileUploadContext,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import BackIcon from '../../public/back-icon.svg';
 import NextImage from 'next/image';
 import { LuFileImage, LuX } from 'react-icons/lu';
@@ -69,7 +69,6 @@ const FileUploadList = () => {
 
 const RegisterStepTwo = (props: Props) => {
     const { setStep, avatar, setAvatar, userInfo } = props;
-    const [file, setFile] = useState<File>();
 
     const {
         control,
@@ -90,18 +89,10 @@ const RegisterStepTwo = (props: Props) => {
     };
 
     const onChange = (e: File) => {
-        setFile(e);
+        convert2base64(e);
     };
 
     const onSubmit = () => {
-        if (file) {
-            convert2base64(file);
-        }
-    };
-
-    useEffect(() => {
-        if (!avatar || !userInfo) return;
-        // Mock API call
         try {
             const sendData = async () => {
                 const response = await axios.post('/api/form', {
@@ -116,7 +107,7 @@ const RegisterStepTwo = (props: Props) => {
         } catch (error) {
             console.error('Error:', error);
         }
-    }, [file, avatar, userInfo, setStep]);
+    };
 
     return (
         <div>

@@ -8,7 +8,7 @@ import {
     Input,
     Text,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React from 'react';
 import BackIcon from '../../public/back-icon.svg';
 import NextImage from 'next/image';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -83,9 +83,6 @@ type FormFields = z.infer<typeof FormFieldsSchema>;
 
 const RegisterStepOne = (props: Props) => {
     const { setStep, setUserInfo, userInfo, hobbies } = props;
-    const [selectedOptions, setSelectedOptions] = useState<
-        { label: string; value: string }[]
-    >([]);
 
     const {
         control,
@@ -224,15 +221,9 @@ const RegisterStepOne = (props: Props) => {
                                             'Please select at least one interest',
                                     })}
                                     isMulti
-                                    value={userInfo?.hobbies || selectedOptions}
+                                    value={userInfo?.hobbies}
                                     variant={'outline'}
                                     onChange={(selected) => {
-                                        setSelectedOptions(
-                                            selected as {
-                                                label: string;
-                                                value: string;
-                                            }[]
-                                        );
                                         setUserInfo({
                                             name: userInfo?.name || '',
                                             password: userInfo?.password || '',
@@ -251,7 +242,10 @@ const RegisterStepOne = (props: Props) => {
                                     closeMenuOnSelect={false}
                                     placeholder='Select your “Interests”'
                                     isOptionDisabled={() =>
-                                        selectedOptions.length >= 2
+                                        userInfo &&
+                                        userInfo?.hobbies.length >= 2
+                                            ? true
+                                            : false
                                     }
                                     className='basic-multi-select mt-6! border-white!'
                                     classNamePrefix='select'
